@@ -1,0 +1,370 @@
+<project name="slidinator" basedir="."
+  xmlns:ivy="antlib:org.apache.ivy.ant"
+	>
+	
+	<!-- NOTE: This script requires that the DITA Open Toolkit
+	           libraries be included in the Java classpath
+	           used to run Ant itself. See the project
+	           documentation for setup instructions. For 
+	           Eclipse, you need to add the jars in the
+	           Toolkit lib/ and lib/saxon/ directories
+	           to the Ant jars configured in the Eclipse
+	           Ant/runtime preferences.
+	  -->
+
+	<!-- NOTE: Update version.properties as needed to reflect new 
+	           versions of project components.
+	  -->
+  <property file="version.properties"/>
+  <property file="build.properties"/>
+  <property file="${user.home}/.build.properties"/>
+	<property file="${user.home}/build.properties"/>
+
+  <property name="build" location="${basedir}/build"/>
+  <property name="dist" location="${basedir}/dist"/>
+  <property name="lib" location="${basedir}/lib"/>
+  <property name="src" location="${basedir}/src/java"/>
+	<property name="license.dir" location="${basedir}/license"/>
+  <property name="toolkit.plugin.src" location="${basedir}/toolkit_plugins"/>
+  <property name="temp" location="${basedir}/temp"/>
+  <property name="docs.dir" location="${basedir}/docs"/>
+  <property name="docs" location="${basedir}/docs"/>
+  <property name="templates.dir" location="${basedir}/templates"/>
+  <property name="website.source" location="${docs}/website"/>
+  <property name="website.build" location="${build}/website"/>
+	<property name="sampledata" location="${basedir}/sample_data"/>
+  <property name="sampledata.dist" location="${dist}/sample_data"/>
+	<property name="plugin.dist" location="${dist}/plugins"/>
+  <property name="package.dist" location="${dist}/slidinator"/>
+	<property name="package.zip.base" value="slidinator"/>
+  <property name="dita-ot-dir" location="c:\DITA-OT1.5"/>
+  <property name="plugin.src" location="${basedir}/toolkit_plugins"/>
+	<property name="plugin-deploy_target" location="${dita-ot-dir}/plugins"/>
+  <property name="doctypes.plugin-dist" location="${plugin.dist}/org.slidinator.doctypes"/>
+  <property name="doctypes.src" location="${basedir}/doctypes"/>
+  <property name="xslt.src" location="${basedir}/src/xslt"/>
+	<property name="target.home" location="${basedir}/target"/>
+	
+	<import file="${dita-ot-dir}${file.separator}integrator.xml" optional="yes"/>
+
+  <property name="lib.home" value="${lib}" />
+  <property name="src.home" value="${basedir}/src" />
+  <property name="src.java.home" value="${src.home}/java" />
+
+  <property name="resources.home" value="${src.home}/resources" />
+  <property name="classes.home" value="${target.home}/classes"/>
+
+  <property name="target.home"         value="target"/>
+
+	<path id="dita-classpath"
+		>
+		<fileset dir="${dita-ot-dir}">
+			<include name="lib"/><!-- Added for 1.5.4 -->
+		</fileset>
+		<fileset dir="${dita-ot-dir}/lib">
+		  <include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+  <path id="classpath.base">
+    <pathelement path="${classes.home}"/>
+    <fileset dir="${lib}">
+        <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="resolve" description="Retrieve dependencies with ivy" depends="init">
+      <ivy:retrieve pattern="${ivy.lib.dir}/[artifact].[ext]" />
+  </target>
+
+	<target name="init">
+		<buildnumber/>
+    <tstamp/>
+  </target>
+
+  <tstamp>
+		<format property="package.date" pattern="yyyy-MM-dd"/>
+	</tstamp>
+  
+  <tstamp>
+  	<format property="build-date-time"
+  	          pattern="yyyy-MM-dd HH:mm:SSS z"/>
+	</tstamp>
+
+
+  <target name="clean">
+  </target>
+	
+	<target name="add-version-info-to-files">
+		<!-- Put version info update stuff here -->
+	</target>
+	
+	<target name="dist-license-info" depends="dist-init">
+		<copy todir="${package.dist}">
+			<fileset dir="${license.dir}">
+			  <include name="*"/>
+		  </fileset>
+		</copy>
+	</target>
+	
+	<target name="dist-toolkit-plugins" 
+		description="Packages the DITA Open Toolkit plugins for deployment to a working Toolkit instance"
+		 depends="
+		dist-init
+		"
+		>
+    <delete includeEmptyDirs="true" failonerror="false">
+      <fileset dir="${plugin.dist}"  includes="org.slidinator.*/**"/>
+    </delete>
+    <copy todir="${plugin.dist}">
+      <fileset dir="${license.dir}">
+        <include name="*"/>
+      </fileset>
+    </copy>
+		<copy todir="${plugin.dist}">
+			<fileset dir="${plugin.src}">
+				<exclude name="*.zip"/> 
+			</fileset>
+		</copy>
+    <copy todir="${doctypes.plugin-dist}/doctypes">
+      <fileset dir="${doctypes.src}">
+      </fileset>
+    </copy>
+
+		<antcall target="add-version-info-to-files"/>
+		
+		<property name="sample_data-zip.filename" value="slidinator-sample_data-${package_version}.zip"/>
+		<property name="sample_data-zip" location="${dist}/${sample_data-zip.filename}"/>
+    
+		<zip destfile="${sample_data-zip}">
+      <fileset dir="${dist}">
+        <include name="sample_data/**"/>
+      </fileset>
+    </zip>
+
+  </target>
+	
+  <target name="dist-dita2indesign-toolkit-plugins" 
+  	description="Creates a standalone distribution of the DITA2InDesign Open Toolkit plug-ins" 
+  	depends="dist-init">
+    <delete includeEmptyDirs="true" failonerror="false">
+      <fileset dir="${plugin.dist}"  includes="org.dita2indesign.*/**"/>
+    </delete>
+		<copy todir="${plugin.dist}">
+			<fileset dir="${plugin.src}">
+				<include name="org.dita2indesign.*/**/*"/>
+			</fileset>
+		</copy>
+		<replace file="${plugin.dist}/org.dita2indesign.dita2indesign/xsl/dita2indesignImpl.xsl"
+			propertyfile="${basedir}/build.number"
+			>
+			<replacefilter
+				token="^buildnumber^"
+				property="build.number"
+			/>
+			<replacefilter
+				token="^version^"
+			  value="${dita2indesign_version}"
+			/>
+			<replacefilter
+				token="^timestamp^"
+			  value="${package.date}"
+			/>
+		</replace>
+  </target>
+    
+  <target name="package-dita2indesign-toolkit-plugins" 
+      description="Creates a standalone delivery package of the DITA2InDesign Open Toolkit plugins" 
+      depends="dist-dita2indesign-toolkit-plugins">
+      <zip destfile="${plugin.dist}/dita2indesign-toolkit-plugins-${dita2indesign_version}.zip">
+        <fileset dir="${plugin.dist}">
+          <include name="org.dita2indesign.*/**"/>
+        </fileset>
+      </zip>
+  </target>
+
+
+	
+	<target name="deploy-toolkit-plugins" depends="dist-toolkit-plugins"
+	  description="Deploy plugins to local DITA Open Toolkit">
+		<delete failonerror="true" includeemptydirs="true">
+			<fileset dir="${plugin-deploy_target}" includes="org.slidinator.*/**">
+			</fileset>
+		</delete>
+		<mkdir dir="${plugin-deploy_target}"/>
+		<copy todir="${plugin-deploy_target}">
+			<fileset dir="${plugin.dist}">
+				<include name="**/*"/>
+        <exclude name="**/CVS"/>
+			</fileset>
+		</copy>
+    <!-- Integrate the deployed plugins: -->
+    <antcall target="integrate"/>
+
+	</target>
+	
+	<target name="dist-init" depends="init">
+		<delete failonerror="false" includeemptydirs="true">
+			<fileset dir="${dist}" includes="*/**"/>
+  	</delete>
+		<mkdir dir="${dist}"/>
+		<mkdir dir="${package.dist}"/>
+  </target>
+	
+	<target name="dist-documentation" depends="dist-init">
+    <copy todir="${package.dist}/documentation">
+      <fileset dir="${docs.dir}/user_docs">
+      	<exclude name="epub/"/>
+        <exclude name="kindle/"/>
+        <exclude name="out/"/>
+        <exclude name="docx2*/"/>
+        <exclude name="temp/"/>
+        <include name="*/**"/>
+      </fileset>
+    </copy>
+
+	</target>
+	
+	<target name="package-toolkit-plugins" depends="dist-init, dist-toolkit-plugins"
+		description="Create distributable Zip package of the Toolkit plugins, including the vocabulary modules."
+		>
+    <zip destfile="${package.dist}/slidinator-toolkit-plugins-${package_version}.zip">
+      <fileset dir="${plugin.dist}">
+        <include name="*.txt"/>
+      	<include name="*/**"/>
+      </fileset>
+    </zip>
+  </target>
+	
+	<target name="package-delivery" 
+		depends="
+		dist-init, 
+		package-toolkit-plugins, 
+		dist-license-info,
+		dist-documentation
+		"
+		description="Create distributable package of all the deliverables"
+		>
+    <copy todir="${package.dist}/xslt">
+      <fileset dir="${xslt.src}">
+        <include name="*/**"/>
+      </fileset>
+    </copy>
+		
+		<zip destfile="${dist}/${package.zip.base}-${package_version}.zip">
+			<fileset dir="${package.dist}" >
+			</fileset>
+      <fileset dir="${dist}" >
+      	<include name="sample_data/**/*"/>
+        <include name="templates/**/*"/>
+      </fileset>
+			<fileset dir="${build}/docs">
+				<include name="*.pdf"/>
+        <include name="*.epub"/>
+        <include name="*.mobi"/>
+        <include name="html/**/*"/>
+			</fileset>
+		</zip>
+	</target>
+	
+
+
+	 <target name="init-web-site">
+	    <delete includeEmptyDirs="true" failonerror="false">
+	      <fileset dir="${website.build}"  includes="*/**"/>
+	    </delete>
+	</target>
+
+	 <target name="generate-web-site" 
+	 	depends="init-web-site" 
+	 	description="Generate Web site HTML">
+ 	
+    <ant antfile="${dita-ot-dir}/build.xml"
+      dir="${dita-ot-dir}"
+      target="dita2xhtml"
+      
+      >
+      <property name="args.input" location="${docs}/website/dita4publishers.ditamap"/>
+      <property name="transtype" value="dita2xhtml"/>
+      <property name="args.outext" value="html"/>
+      <property name="args.xhtml.toc" value="toc"/>
+      <property name="dita.dir" location="${dita-ot-dir}"/>
+      <property name="dita.temp.dir" location="${temp}/dita-temp"/>
+      <property name="clean.temp" value="true"/><!-- Unset to preserve the temp directory -->
+      <property name="output.dir" location="${website.build}"/>
+    </ant>
+ 	
+ 	  <copy todir="${website.build}" >
+ 	  	<fileset dir="${docs}/website/static-html" includes="index.html"/>
+ 	  </copy>
+  </target>
+	
+	<target name="init-target">
+    <delete dir="${target.home}" failonerror="false"/>
+    <mkdir dir="${target.home}"/>
+		<mkdir dir="${api-and-tools.target}"/>
+    <mkdir dir="${api-and-tools.target}/lib"/>
+  </target>
+	
+  <target name="compile" depends="init">
+    
+    <delete dir="${classes.home}" />
+    
+    <mkdir dir="${classes.home}"/>
+    <javac       
+      srcdir="${src.java.home}"
+      destdir="${classes.home}"
+      debug="on"
+      deprecation="on">
+      <classpath refid="classpath.base"/>
+    </javac>    
+  </target>
+	
+  <target name="jar-slideset-generator" depends="dist-init,compile" description="Create jar for DITA-to-SlideSet transformer">
+    <jar jarfile="${dist}/dita2slideset.jar" basedir="${classes.home}" >
+			<include name="org/slidinator/slideset/**/*"/>
+    </jar>
+    <jar jarfile="${dist}/dita2slideset-app.jar" basedir="${classes.home}" >
+			<include name="org/slidinator/slideset/**/*"/>
+      <manifest>
+        <attribute name="Main-Class" value="org.slidinator.slideset.DITA2PPTX"/>
+        <attribute name="Class-Path" value=". 
+          commons-logging.jar
+          commons-cli.jar
+          commons-io.jar
+          log4j.jar
+              "
+        />
+	    </manifest>
+    	<zipgroupfileset dir="${lib}">
+  			<include name="commons-*.jar"/>
+  			<include name="dom4j.jar"/>
+  			<include name="log4j.jar"/>
+  			<include name="poi.jar"/>
+  			<include name="poi-*.jar"/>
+  			<include name="saxon*.jar"/>
+  			<include name="xml-apis.jar"/>
+  			<include name="xml-resolver.jar"/>
+  			<include name="xbean.jar"/>
+  			<include name="xercesImpl.jar"/>
+    	</zipgroupfileset>
+    </jar>
+  </target>
+	
+
+  
+  <target name="package-editing-templates" depends="init-target, clean" 
+  	description="Packages the editing templates in their own Zip file.">
+  	<copy todir="${dist}/templates">
+  		<fileset dir="${templates.dir}">
+  			<include name="maps/**"/>
+        <include name="topics/**"/>
+  		</fileset>
+  	</copy>
+  	<zip destfile="${dist}/slidinator-templates.zip" basedir="${dist}">
+  		<include name="templates/*/**"/>
+  	</zip>
+  </target>
+
+
+</project>

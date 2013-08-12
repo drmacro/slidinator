@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/commons-cli.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j.jar"/>
+	<classpathentry kind="lib" path="lib/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/ooxml-schemas.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-schemas.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml.jar"/>
+	<classpathentry kind="lib" path="lib/poi-scratchpad.jar"/>
+	<classpathentry kind="lib" path="lib/poi.jar"/>
+	<classpathentry kind="lib" path="lib/resolver.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-dom.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-s9api.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-xpath.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="lib/xml-resolver.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
