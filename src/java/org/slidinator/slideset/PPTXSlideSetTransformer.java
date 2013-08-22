@@ -69,8 +69,8 @@ public class PPTXSlideSetTransformer
         if (true || getDebug()) {
             File tempFile = File.createTempFile("SlideSetTransform-slideset-", ".xml");
             FileUtils.writeByteArrayToFile(tempFile, slideSetXmlOutStream.toByteArray());
-            System.out.println("Intermediate slide set XML written to: " + tempFile.getAbsolutePath());
-//            log.debug("Intermediate slide set XML written to: " + tempFile.getAbsolutePath());
+            //System.out.println("Intermediate slide set XML written to: " + tempFile.getAbsolutePath());
+            log.debug("Intermediate slide set XML written to: " + tempFile.getAbsolutePath());
         }
         
 
