@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="15.0">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options>
+            <serialized version="15.0" xml:space="preserve">
+                <map>
+                    <entry>
+                        <String>enable.project.master.files.support</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                </map>
+            </serialized>
+        </options>
+    </meta>
+    <projectTree name="slidinator.xpr">
+        <folder masterFiles="true" name="Master Files">
+            <file name="toolkit_plugins/org.slidinator.slideset/xsl/map2slidesetImpl.xsl"/>
+        </folder>
+        <folder path="."/>
+    </projectTree>
+</project>
