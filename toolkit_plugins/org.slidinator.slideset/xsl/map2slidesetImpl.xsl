@@ -40,15 +40,15 @@
   <xsl:include href="map2slidesetMap.xsl"/>
   <xsl:include href="map2slidesetTopic.xsl"/>
   
-  <xsl:param name="outdir" select="./slideset"/>
+  <xsl:param name="outdir" select="'./slideset'"/>
   <!-- NOTE: Case of OUTEXT parameter matches case used in base HTML
     transformation type.
   -->
   <xsl:param name="OUTEXT" select="'.xml'"/>
-  <xsl:param name="tempdir" select="./temp"/>
+  <xsl:param name="tempdir" select="'./temp'"/>
   <xsl:param name="CSSPATH" select="''"/>
   <xsl:param name="DITAEXT" select="'.dita'"/>
-  <xsl:param name="FILTERFILE"/> <!-- From dita2htmlImpl.xsl -->
+  <xsl:param name="FILTERFILE" select="''"/> <!-- From dita2htmlImpl.xsl -->
   
   <xsl:param name="topicsOutputDir" select="'topics'" as="xs:string"/> <!-- Required by HTML generation utils -->
   <xsl:param name="rawPlatformString" select="'unknown'" as="xs:string"/><!-- As provided by Ant -->
@@ -57,11 +57,13 @@
   <xsl:param name="generateGlossary" as="xs:string" select="'no'"/>
   <xsl:variable name="generateGlossaryBoolean" 
     select="matches($generateGlossary, 'yes|true|on|1', 'i')"
+    as="xs:boolean"
   />
   
   <xsl:param name="generateIndex" as="xs:string" select="'no'"/>
   <xsl:variable name="generateIndexBoolean" 
     select="matches($generateIndex, 'yes|true|on|1', 'i')"
+    as="xs:boolean"
   />
   
   <!-- used by the OT-provided output-message named template. -->
@@ -121,19 +123,25 @@
   
   
   <xsl:template match="/">
-    
+    <xsl:message> + [DEBUG] Root template: Starting...</xsl:message>
     <xsl:apply-templates select="." mode="report-parameters"/>
     
+    <xsl:variable name="rootMapDocUrl" select="string(base-uri(.))" as="xs:string"/>
+    <xsl:message> + [DEBUG] rootmapDocUrl="<xsl:value-of select="$rootMapDocUrl"/>"</xsl:message>
+    <xsl:message> + [DEBUG] Root template: Applying templates...</xsl:message>
     <xsl:apply-templates>
-      <xsl:with-param name="rootMapDocUrl" select="document-uri(.)" as="xs:string" tunnel="yes"/>
+      <xsl:with-param name="rootMapDocUrl" select="$rootMapDocUrl" as="xs:string" tunnel="yes"/>
     </xsl:apply-templates>
+    <xsl:message> + [DEBUG] Root template: Done applying templates.</xsl:message>
  </xsl:template>   
     
  <xsl:template match="/*[df:class(., 'map/map')]">   
+    <xsl:message> + [DEBUG] default mode: map/map</xsl:message>
 
-
+   <xsl:message> + [DEBUG] collecting data:</xsl:message>
    <xsl:variable name="collected-data" as="element()">
-     <xsl:call-template name="mapdriven:collect-data"/>      
+<!--     <xsl:call-template name="mapdriven:collect-data"/>      -->
+     <mapdriven:collected-data/>
    </xsl:variable>
    
    <xsl:if test="true() or $debugBoolean">
@@ -145,11 +153,13 @@
      </xsl:result-document>
    </xsl:if>
    
+   <xsl:message> + [DEBUG] default: map/map: applying templates in mode generate-slides...</xsl:message>
    <xsl:apply-templates select="." mode="generate-slides">
      <xsl:with-param name="collected-data" as="element()" tunnel="yes"
        select="$collected-data"
      />
    </xsl:apply-templates>
+   <xsl:message> + [DEBUG] default: map/map: applying templates in mode generate-slides...</xsl:message>
    
   </xsl:template>
    

@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.Source;
 import javax.xml.transform.URIResolver;
 
+import net.sf.saxon.s9api.MessageListener;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmAtomicValue;
 
@@ -155,4 +156,16 @@ public interface SlideSetTransformer {
      * @return Array, possibly null, of catalog file paths (see {@link CatalogManager}).
      */
     String[] getCatalogs();
+    
+    /**
+     * Set the Saxon message listener to use with the Saxon transform.
+     * @param listener The Saxon message listener to use with the transform.
+     */
+    public abstract void setMessageListener(MessageListener listener);
+    
+    /**
+     * Gets the message listener set on the transformer, if any.
+     * @return The configured message listener, or null if the listener has not been set.
+     */
+    public MessageListener getMessageListener();
 }

@@ -283,8 +283,14 @@
     <jar jarfile="${dist}/dita2slideset.jar" basedir="${classes.home}" >
 			<include name="org/slidinator/slideset/**/*"/>
     </jar>
+  	<copy todir="${classes.home}">
+  		<fileset dir="${src}">
+        <include name="log4j.properties"/>
+      </fileset>
+  	</copy>
     <jar jarfile="${dist}/dita2slideset-app.jar" basedir="${classes.home}" >
 			<include name="org/slidinator/slideset/**/*"/>
+    	<include name="log4j.properties"/>
       <manifest>
         <attribute name="Main-Class" value="org.slidinator.slideset.DITA2PPTX"/>
         <attribute name="Class-Path" value=". 
@@ -292,6 +298,7 @@
           commons-cli.jar
           commons-io.jar
           log4j.jar
+          log4j.properties
               "
         />
 	    </manifest>

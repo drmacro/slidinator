@@ -17,6 +17,7 @@ import javax.xml.transform.dom.DOMSource;
 
 import net.sf.saxon.FeatureKeys;
 import net.sf.saxon.s9api.Destination;
+import net.sf.saxon.s9api.MessageListener;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.SaxonApiException;
@@ -48,7 +49,8 @@ public abstract class SlideSetTransformerBase implements SlideSetTransformer {
     private URIResolver uriResolver;
     private EntityResolver entityResolver;
     private String[] catalogs;
-    private String mapSystemId; 
+    private String mapSystemId;
+    private MessageListener messageListener; 
     
     public SlideSetTransformerBase() throws ParserConfigurationException {
         docBuilder = DocumentBuilderFactory.newInstance()
@@ -162,6 +164,7 @@ public abstract class SlideSetTransformerBase implements SlideSetTransformer {
     
     protected XsltCompiler getSaxonXsltCompiler() throws Exception {
         Processor proc = new Processor(false); // Not schema aware.
+        log.info("Using SAXON version " + proc.getSaxonProductVersion());
         proc.setConfigurationProperty(FeatureKeys.DTD_VALIDATION, false);
         proc.setConfigurationProperty(FeatureKeys.LINE_NUMBERING, true);
         XsltCompiler compiler = proc.newXsltCompiler();
@@ -230,7 +233,9 @@ public abstract class SlideSetTransformerBase implements SlideSetTransformer {
                         xsltTransform.setSource(getMapSource());  
                         xsltTransform.getUnderlyingController()
                             .setURIResolver(uriResolver);
-                        
+                        if (this.messageListener != null) {
+                            xsltTransform.setMessageListener(this.messageListener);
+                        }
                         if (this.slideSetTransformParams != null) {
                             for (Entry<QName, XdmAtomicValue> entry : slideSetTransformParams.entrySet()) {
                                 xsltTransform.setParameter(
@@ -270,6 +275,20 @@ public abstract class SlideSetTransformerBase implements SlideSetTransformer {
                         setupResolver(catalogs);
                         this.docBuilder.setEntityResolver(entityResolver);
                     }
+
+    @Override
+    public
+            void setMessageListener(
+                    MessageListener listener) {
+                        this.messageListener = listener;
+                    }
+
+    @Override
+    public
+            MessageListener
+            getMessageListener() {
+                return this.messageListener;
+            }
 
 
 }

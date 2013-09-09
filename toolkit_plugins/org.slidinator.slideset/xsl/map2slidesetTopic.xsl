@@ -110,7 +110,7 @@
     <sld:pre style="{local:getOutputClass(.)}"><xsl:apply-templates/></sld:pre>  
   </xsl:template>
   
-  <xsl:template match="*[df:class(., 'topic/image')]" mode="#all">
+  <xsl:template match="*[df:class(., 'topic/image')][@href != '']" mode="#all">
     <xsl:variable name="hrefValue" as="xs:string" select="@href"/>
     <xsl:variable name="imageUrl" as="xs:string"
       select="relpath:newFile(relpath:getParent(document-uri(root(.))), $hrefValue)"

@@ -21,6 +21,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  * Command-line utility for generation PPTX files from resolved DITA maps.
@@ -36,7 +37,7 @@ public class DITA2PPTX {
     public static
             void main(
                     String[] args) {
-
+        
         Options options = new Options();
         Option option;
 
