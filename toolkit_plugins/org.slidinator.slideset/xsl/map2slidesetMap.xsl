@@ -18,7 +18,6 @@
     ============================= -->
   
   <xsl:template match="/*[df:class(., 'map/map')]" mode="generate-slides">
-    <xsl:param name="collected-data" as="element()" tunnel="yes"/>
     <xsl:message> + [DEBUG] generate-slides: map/map</xsl:message>    
     <sld:simpleslideset>
       <sld:prolog>
@@ -31,8 +30,6 @@
         <xsl:apply-templates/>
       </sld:slides>
     </sld:simpleslideset>
-    
-    
   </xsl:template>
   
   <xsl:template mode="slide-prolog" match="*">
@@ -57,7 +54,6 @@
   
     <xsl:template match="*[df:isTopicRef(.)]">
       <xsl:param name="rootMapDocUrl" as="xs:string" tunnel="yes"/>
-      <xsl:param name="collected-data" as="element()" tunnel="yes"/>    
        <xsl:message> + [DEBUG] generate-slides: isTopicRef</xsl:message>
       
       <xsl:if test="false() and $debugBoolean">
@@ -71,7 +67,6 @@
         <xsl:otherwise>
           <xsl:apply-templates select="$topic" mode="#current">
             <xsl:with-param name="topicref" as="element()" select="." tunnel="yes"/>
-            <xsl:with-param name="collected-data" select="$collected-data" as="element()" tunnel="yes"/>    
           </xsl:apply-templates>
         </xsl:otherwise>
       </xsl:choose>    

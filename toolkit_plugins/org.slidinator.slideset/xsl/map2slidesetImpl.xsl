@@ -40,6 +40,9 @@
   <xsl:include href="map2slidesetMap.xsl"/>
   <xsl:include href="map2slidesetTopic.xsl"/>
   
+  <!-- The outdir param is used primarily for the generation of graphic-copying
+       Ant script generated in map2graphicMap.xsl
+    -->
   <xsl:param name="outdir" select="'./slideset'"/>
   <!-- NOTE: Case of OUTEXT parameter matches case used in base HTML
     transformation type.
@@ -69,27 +72,21 @@
   <!-- used by the OT-provided output-message named template. -->
   <xsl:variable name="msgprefix">DOTX</xsl:variable>
   
+  <!-- NOTE: This parameter is required by the map2graphicMap.xsl, which we include,
+             but is not used directly by the main Simple Slide Set generation
+             logic.
+                           
+    -->
+  <xsl:param name="imagesOutputPath" as="xs:string" 
+    select="relpath:newFile($outdir, 'images')"
+  />
+  
   <xsl:output method="xml" name="indented-xml"
     indent="yes"
   />
   
   <xsl:preserve-space elements="lines codeblock"/>
   
-  <xsl:variable name="imagesOutputPath">
-    <xsl:choose>
-      <xsl:when test="$imagesOutputDir != ''">
-        <xsl:sequence select="concat($outdir, 
-          if (ends-with($outdir, '/')) then '' else '/', 
-          $imagesOutputDir)"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:sequence select="$outdir"/>
-      </xsl:otherwise>
-    </xsl:choose>    
-  </xsl:variable>  
-  
-  
-
   <!-- These variables are copied from dita2htmlImpl.xsl: -->
   <xsl:variable name="FILTERFILEURL">
     <xsl:choose>
@@ -145,8 +142,11 @@
    </xsl:variable>
    
    <xsl:if test="true() or $debugBoolean">
-     <xsl:message> + [DEBUG] Writing file <xsl:sequence select="relpath:newFile($outdir, 'collected-data.xml')"/>...</xsl:message>
-     <xsl:result-document href="{relpath:newFile($outdir, 'collected-data.xml')}"
+     <xsl:variable name="collectedDataFileUrl" as="xs:string" 
+       select="relpath:newFile(relpath:getParent(base-uri(.)), 'collected-data.xml')"
+     />
+     <xsl:message> + [DEBUG] Writing file <xsl:sequence select="$collectedDataFileUrl"/>...</xsl:message>
+     <xsl:result-document href="{$collectedDataFileUrl}"
        format="indented-xml"
        >
        <xsl:sequence select="$collected-data"/>
@@ -154,6 +154,7 @@
    </xsl:if>
    
    <xsl:message> + [DEBUG] default: map/map: applying templates in mode generate-slides...</xsl:message>
+   <xsl:message> + [DEBUG]    $collected-data=<xsl:sequence select="$collected-data"/></xsl:message>
    <xsl:apply-templates select="." mode="generate-slides">
      <xsl:with-param name="collected-data" as="element()" tunnel="yes"
        select="$collected-data"
