@@ -21,7 +21,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.PropertyConfigurator;
 
 /**
  * Command-line utility for generation PPTX files from resolved DITA maps.
