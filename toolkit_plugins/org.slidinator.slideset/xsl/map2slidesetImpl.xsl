@@ -172,7 +172,18 @@
       Parameters:
       
       + debug           = "<xsl:sequence select="$debug"/>"
-      
+      + outdir           = "<xsl:sequence select="$outdir"/>"
+      + OUTEXT           = "<xsl:sequence select="$OUTEXT"/>"
+      + tempdir          = "<xsl:sequence select="$tempdir"/>"
+      + CSSPATH          = "<xsl:sequence select="$CSSPATH"/>"
+      + DITAEXT          = "<xsl:sequence select="$DITAEXT"/>"
+      + FILTERFILE       = "<xsl:sequence select="$FILTERFILE"/>"
+      + topicsOutputDir  = "<xsl:sequence select="$topicsOutputDir"/>"
+      + rawPlatformString= "<xsl:sequence select="$rawPlatformString"/>"
+      + imagesOutputDir  = "<xsl:sequence select="$imagesOutputDir"/>"
+      + generateGlossary = "<xsl:sequence select="$generateGlossary"/>"
+      + generateIndex    = "<xsl:sequence select="$generateIndex"/>"
+       
       Global Variables:
       
       + debugBoolean     = "<xsl:sequence select="$debugBoolean"/>"
