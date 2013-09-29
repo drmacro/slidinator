@@ -1,0 +1,41 @@
+<project name="dita2slideset2htmlreveal" default="dita2slideset2htmlreveal"
+  >
+  <!-- Reuse most of the stuff in the base slideset transform -->	
+	
+  <!-- test to see where the plugin is located, plugins or demo -->
+  <dirname property="slideset2htmlreveal.dir" file="${ant.file.dita2slideset2htmlreveal}"/>
+	
+	<!-- Controls debugging within the XSLTs. Set to "true" to turn on debugging: -->
+	<property name="debug" value="false"/>
+	
+
+	<target name="dita2slideset2htmlreveal"
+    unless="noMap"
+    xmlns:dita="http://dita-ot.sourceforge.net"
+		dita:depends="build-init, preprocess,slideset2htmlreveal"
+    dita:extension="depends org.dita.dost.platform.InsertDependsAction">
+  </target>
+  
+  <target name="slideset2htmlreveal"
+    unless="noMap"
+    depends="dita.map.slideset2htmlreveal"/>
+	  
+    
+  
+
+	
+  <target name="slideset.generate.htmlreveal" 
+	  depends="dita.map.slideset.init, 
+	           slideset.generate.slidesetml,
+  	           slideset.copy.graphics"
+  >
+  </target>
+  
+  <target name="dita.map.slideset2htmlreveal" 
+  	depends="slideset.generate.htmlreveal" 
+  	description="Generate slideset data files and slidy HTML from the input map">
+  	
+   <!-- All work is done by dependency targets -->
+  </target>
+  	
+</project>

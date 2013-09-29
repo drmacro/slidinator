@@ -2,11 +2,12 @@
   <extension id="xsl.transtype-slideset2htmlreveal"/>
   
   <require plugin="net.sourceforge.dita4publishers.common.xslt"/>
+  <require plugin="org.slidinator.slideset"/>
   <require plugin="org.slidinator.slideset2html.common"/>
 
   <template file="build_transtype-slideset2htmlreveal_template.xml"/>
   
-  <template file="xsl/map2slideset_template.xsl"/>
+  <template file="xsl/slideset2htmlreveal_template.xsl"/>
 
   <feature extension="dita.conductor.transtype.check" value="slideset2htmlreveal" type="txt"/>
   <feature extension="dita.conductor.target.relative" value="build.xml" type="file"/>

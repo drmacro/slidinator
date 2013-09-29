@@ -36,7 +36,7 @@
         <isset property="args.slideset.toc" />
       </not>
     </condition>
-    <condition property="out.ext" value=".gv">
+    <condition property="out.ext" value=".xml">
       <not>
         <isset property="out.ext" />
       </not>
@@ -49,10 +49,7 @@
   </target>
   
 
-  
-  <target name="dita.map.slideset" depends="dita.map.slideset.init" 
-  	description="Generate slideset data files from the input map">
-  	
+  <target name="slideset.generate.slidesetml">
   	<mkdir dir="${slideset.temp.dir}"/>
   	<makeurl file="${slideset.temp.dir}" property="slideset.xslt.outdir"/>
   	<makeurl file="${dita.temp.dir}" property="slideset.xslt.tempdir"/>
@@ -66,20 +63,33 @@
       includesfile="${dita.temp.dir}${file.separator}fullditamap.list"
       classpathref="dost.class.path"
       style="${map2slideset.style}">
-      <param name="debug" expression="${debug}"/>
-     	<param name="tempdir" expression="${slideset.xslt.tempdir}"/>
-    	<param name="outdir" expression="${output.dir}"/>
-    	<param name="rawPlatformString" expression="${os.name}"/>
-
-    	<!-- Parameters from dita2xhtml and similar transtypes: -->   
-      <param name="WORKDIR" expression="${workdir}" if="workdir"/>
-      <param name="DRAFT" expression="${args.draft}" if="args.draft"></param>
-      <param name="ARTLBL" expression="${args.artlbl}" if="args.artlbl"></param>
-    	<param name="OUTPUTDIR" expression="${output.dir}"/>
+		<param name="debug" expression="${debug}"/>
+		<param name="tempdir" expression="${slideset.xslt.tempdir}"/>
+		<param name="outdir" expression="${output.dir}"/>
+		<param name="rawPlatformString" expression="${os.name}"/>
+		
+		<!-- Parameters from dita2xhtml and similar transtypes: -->   
+		<param name="WORKDIR" expression="${workdir}" if="workdir"/>
+		<param name="DRAFT" expression="${args.draft}" if="args.draft"></param>
+		<param name="ARTLBL" expression="${args.artlbl}" if="args.artlbl"></param>
+		<param name="OUTPUTDIR" expression="${output.dir}"/>
     </xslt>
 
-  	<!-- Run the slideset2pptx Java application -->
-
+  </target>
+	 
+	
+  <target name="slideset.generate.pptx" 
+	  depends="dita.map.slideset.init, 
+	           slideset.generate.slidesetml,
+  	           slideset.copy.graphics"
+  >
+  </target>
+  
+  <target name="dita.map.slideset" 
+  	depends="slideset.generate.pptx" 
+  	description="Generate slideset data files and PPTX from the input map">
+  	
+   <!-- All work is done by dependency targets -->
   </target>
   
   <target name="slideset.copy.graphics" 

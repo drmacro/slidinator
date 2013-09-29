@@ -9,9 +9,8 @@
 
   <xsl:import href="slideset2htmlrevealImpl.xsl"/>
 
-  <!-- FIXME: 
-    <dita:extension id="xsl.transtype-slideset" 
+  <dita:extension id="xsl.transtype-slideset2htmlreveal" 
     behavior="org.dita.dost.platform.ImportXSLAction" 
     xmlns:dita="http://dita-ot.sourceforge.net"/>
--->
+
 </xsl:stylesheet>
