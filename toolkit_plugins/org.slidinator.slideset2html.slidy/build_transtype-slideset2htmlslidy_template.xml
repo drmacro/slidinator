@@ -26,9 +26,39 @@
 	
   <target name="slideset.generate.htmlslidy" 
 	  depends="dita.map.slideset.init, 
-	           slideset.generate.slidesetml,
-  	           slideset.copy.graphics"
+	           slideset.generate.slidesetml"
   >
+	  	<!-- FIXME: Add dependency on copy-graphics.xml when
+	  	     generation of copy-graphics is sorted out.
+	  	  -->
+	  	
+	  	<mkdir dir="${slideset.temp.dir}"/>
+	  	<makeurl file="${slideset.temp.dir}" property="slideset.xslt.outdir"/>
+	  	<makeurl file="${dita.temp.dir}" property="slideset.xslt.tempdir"/>
+	  	
+	  	<property name="map2slideset2htmlslidy.style" 
+                  location="${slideset2htmlslidy.dir}/xsl/slideset2htmlslidy.xsl"/>
+		<property name="slideset2htmlslidy.result.filename" 
+		  		  value="${dita.map.filename.root}.${slideset2htmlslidy.output.format}"/>
+
+	    <xslt processor="trax"
+	      basedir="${dita.temp.dir}"
+	      destdir="${output.dir}"
+	      includesfile="${dita.temp.dir}${file.separator}fullditamap.list"
+	      classpathref="dost.class.path"
+	      style="${map2slideset2htmlslidy.style}">
+			<param name="debug" expression="${debug}"/>
+			<param name="tempdir" expression="${slideset.xslt.tempdir}"/>
+			<param name="outdir" expression="${output.dir}"/>
+			<param name="rawPlatformString" expression="${os.name}"/>
+			
+			<!-- Parameters from dita2xhtml and similar transtypes: -->   
+			<param name="WORKDIR" expression="${workdir}" if="workdir"/>
+			<param name="DRAFT" expression="${args.draft}" if="args.draft"></param>
+			<param name="ARTLBL" expression="${args.artlbl}" if="args.artlbl"></param>
+			<param name="OUTPUTDIR" expression="${output.dir}"/>
+	    </xslt>
+
   </target>
   
   <target name="dita.map.slideset2htmlslidy" 

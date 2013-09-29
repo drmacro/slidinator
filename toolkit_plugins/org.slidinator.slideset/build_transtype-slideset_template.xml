@@ -36,6 +36,11 @@
         <isset property="args.slideset.toc" />
       </not>
     </condition>
+    <condition property="slideset.output.format" value=".xml">
+      <not>
+        <isset property="slideset.output.format" />
+      </not>
+    </condition>
     <condition property="out.ext" value=".xml">
       <not>
         <isset property="out.ext" />
@@ -55,7 +60,8 @@
   	<makeurl file="${dita.temp.dir}" property="slideset.xslt.tempdir"/>
   	
   	<property name="map2slideset.style" location="${slideset.dir}/xsl/map2slideset.xsl"/>
-		<property name="slideset.result.filename" value="${dita.map.filename.root}.${slideset.output.format}"/>
+		<property name="slideset.result.filename" 
+			value="${dita.map.filename.root}.${slideset.output.format}"/>
 
     <xslt processor="trax"
       basedir="${dita.temp.dir}"
@@ -80,9 +86,12 @@
 	
   <target name="slideset.generate.pptx" 
 	  depends="dita.map.slideset.init, 
-	           slideset.generate.slidesetml,
-  	           slideset.copy.graphics"
+	           slideset.generate.slidesetml
+  	           "
   >
+  	<!-- FIXME: Add use of copy-graphics once generation of copy-graphics.xml
+  	     is sorted out.
+  	  -->
   </target>
   
   <target name="dita.map.slideset" 
@@ -94,7 +103,11 @@
   
   <target name="slideset.copy.graphics" 
 	  description="Copies graphics from input to the slideset output directory based on the graphic map generated during slideset generation">
-  	<ant antfile="${slideset.temp.dir}/copy-graphics.xml"  		
+  	<condition property="isCopyGraphics">
+     <available file="${slideset.temp.dir}/copy-graphics.xml"/>
+    </condition>
+  	<ant antfile="${slideset.temp.dir}/copy-graphics.xml"
+  		
   		>
   	</ant>
 	</target>
