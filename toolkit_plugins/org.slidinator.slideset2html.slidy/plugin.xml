@@ -1,0 +1,14 @@
+<plugin id="org.slidinator.slideset2html.slidy">
+  <extension id="xsl.transtype-slideset2htmlslidy"/>
+  
+  <require plugin="net.sourceforge.dita4publishers.common.xslt"/>
+  <require plugin="org.slidinator.slideset2html.common"/>
+
+  <template file="build_transtype-slideset2htmlslidy_template.xml"/>
+  
+  <template file="xsl/map2slideset_template.xsl"/>
+
+  <feature extension="dita.conductor.transtype.check" value="slideset2htmlslidy" type="txt"/>
+  <feature extension="dita.conductor.target.relative" value="build.xml" type="file"/>
+
+</plugin>
