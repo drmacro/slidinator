@@ -1,0 +1,12 @@
+<plugin id="org.slidinator.slideset2html.common">
+  <!-- This plugin provides common code used by all Slidinator slideset2HTML transforms.
+       
+       In particular, the intention is to have as much common transform code here as possible so that plugins for separate HTML outputs are as small deltas as possible.
+  --> 
+  
+  <feature extension="dita.xsl.xhtml"
+    value="xsl/commonHtml.xsl" 
+    type="file"
+  />
+  
+</plugin>

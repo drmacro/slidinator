@@ -1,0 +1,19 @@
+         .i, .italic {
+            font-style:italic;   
+         }
+         .b, .bold {
+            font-weight:bold;
+         }
+         .u {
+            text-decoration:underline;
+         }
+         .sc {
+            font-variant:small-caps;
+         }
+         .b-sc {
+            font-variant:small-caps;
+            font-weight:bold;
+         }
+         .codeph {
+            font-family:monospace;
+         }
