@@ -40,6 +40,14 @@
     
   </xsl:template>
   
+  <xsl:template mode="slideBody" match="*[df:class(., 'topic/abstract')]">
+    <xsl:apply-templates mode="#current" select="*[df:class(., 'topic/shortdesc')]"/>
+  </xsl:template>
+
+  <xsl:template mode="slideBody" match="*[df:class(., 'topic/shortdesc')]">
+    <xsl:call-template name="make-para"/>
+  </xsl:template>
+
   <xsl:template  mode="slideBody" priority="10" 
     match="
     *[df:class(., 'd4pSlide/d4pStudentNotes')] | 
@@ -98,7 +106,7 @@
     <sld:li><xsl:apply-templates/></sld:li>    
   </xsl:template>
   
-  <xsl:template match="*[df:class(., 'topic/p')]" mode="#all">
+  <xsl:template match="*[df:class(., 'topic/p')]" name="make-para" mode="#all">
     <sld:p><xsl:apply-templates/></sld:p>    
   </xsl:template>
   

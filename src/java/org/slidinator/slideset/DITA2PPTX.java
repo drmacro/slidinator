@@ -241,7 +241,7 @@ public class DITA2PPTX {
                 new XdmAtomicValue(resultPPTXFile.getParentFile().getAbsolutePath()));
 
         transformer.setSlideSetTransformSource(xsltSource, params);
-        transformer.transform();
+        transformer.transform(resultPPTXFile.getParentFile());
         System.out.println(" + [INFO] PPTX file written to \"" + resultPPTXFile.getAbsolutePath());
         
         

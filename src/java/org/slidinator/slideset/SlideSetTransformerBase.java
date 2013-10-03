@@ -1,6 +1,7 @@
 package org.slidinator.slideset;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -160,7 +161,7 @@ public abstract class SlideSetTransformerBase implements SlideSetTransformer {
      */
     @Override
     public abstract
-            void transform() throws Exception;
+            void transform(File outdir) throws Exception;
     
     protected XsltCompiler getSaxonXsltCompiler() throws Exception {
         Processor proc = new Processor(false); // Not schema aware.

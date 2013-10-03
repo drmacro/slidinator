@@ -71,6 +71,19 @@
         </xsl:otherwise>
       </xsl:choose>    
     </xsl:template>
+  
+  <xsl:template match="*[df:class(., 'map/map')]/*[df:class(., 'topic/title')]" priority="10">
+    <!-- Suppress title for now. 
+      
+         Eventually need to generate title slide from map title and metadata 
+      -->
+  </xsl:template>
+  <xsl:template match="*[df:class(., 'map/map')]/*[df:class(., 'map/topicmeta')]">
+    <!-- Suppress title for now. 
+      
+          
+      -->
+  </xsl:template>
     
   <xsl:template match="*" priority="-1">
     <xsl:apply-templates mode="#current"/>

@@ -1,6 +1,7 @@
 package org.slidinator.slideset;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -90,10 +91,11 @@ public interface SlideSetTransformer {
     /**
      * Does the transform. The input is the map source, the primary
      * result will be in the result output stream.
+     * @param outdir The output directory for the PPTX file.
      */
     public abstract
             void
-            transform() throws Exception;
+            transform(File outdir) throws Exception;
 
     /**
      * Get the Source for the DITA-to-SlideSet transform.
@@ -168,4 +170,5 @@ public interface SlideSetTransformer {
      * @return The configured message listener, or null if the listener has not been set.
      */
     public MessageListener getMessageListener();
+
 }

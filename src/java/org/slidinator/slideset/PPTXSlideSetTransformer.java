@@ -58,7 +58,7 @@ public class PPTXSlideSetTransformer
     @Override
     public
             void
-            transform() throws Exception {
+            transform(File outdir) throws Exception {
         ByteArrayOutputStream slideSetXmlOutStream = new ByteArrayOutputStream();
         Serializer  xsltResult = new Serializer();
         xsltResult.setOutputStream(slideSetXmlOutStream);
@@ -67,7 +67,8 @@ public class PPTXSlideSetTransformer
         // Transform the input DITA map into slide set XML
         generateSlideSetXml(xsltResult); // Needs to throw an exception if the transform fails.
         if (true || getDebug()) {
-            File tempFile = File.createTempFile("SlideSetTransform-slideset-", ".xml");
+        	// FIXME: Need source map filename
+            File tempFile = new File(outdir, "SlideSetTransform-slideset.xml");
             FileUtils.writeByteArrayToFile(tempFile, slideSetXmlOutStream.toByteArray());
             //System.out.println("Intermediate slide set XML written to: " + tempFile.getAbsolutePath());
             log.debug("Intermediate slide set XML written to: " + tempFile.getAbsolutePath());
