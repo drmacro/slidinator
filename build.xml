@@ -96,7 +96,22 @@
   </target>
 	
 	<target name="add-version-info-to-files">
-		<!-- Put version info update stuff here -->
+	    <replace file="${plugin.dist}/org.slidinator.slideset/xsl/map2slidesetImpl.xsl"
+	      propertyfile="${basedir}/build.number"
+	      >
+	      <replacefilter
+	        token="^version^"
+	        value="${package_version}"
+	      />
+	      <replacefilter
+	        token="^buildnumber^"
+	        property="build.number"
+	      />
+	      <replacefilter
+	        token="^timestamp^"
+	        value="${build-date-time}"
+	      />
+	    </replace>
 	</target>
 	
 	<target name="dist-license-info" depends="dist-init">
@@ -114,18 +129,20 @@
 		"
 		>
     <delete includeEmptyDirs="true" failonerror="false">
-      <fileset dir="${plugin.dist}"  includes="org.slidinator.*/**"/>
+      <fileset dir="${plugin.dist}"  includes="*"/>
     </delete>
     <copy todir="${plugin.dist}">
       <fileset dir="${license.dir}">
         <include name="*"/>
       </fileset>
     </copy>
-		<copy todir="${plugin.dist}">
-			<fileset dir="${plugin.src}">
-				<exclude name="*.zip"/> 
-			</fileset>
-		</copy>
+	<copy todir="${plugin.dist}">
+		<fileset dir="${plugin.src}">
+		 	<include name="org.slidinator.slideset/**"/>
+			<exclude name="*.zip"/> 
+			<exclude name="org.slidinator.*2html"/> 
+		</fileset>
+	</copy>
     <copy todir="${doctypes.plugin-dist}/doctypes">
       <fileset dir="${doctypes.src}">
       </fileset>
@@ -331,6 +348,29 @@
   		<include name="templates/*/**"/>
   	</zip>
   </target>
+
+  <target name="push-jar-to-ivy" depends="jar-slideset-generator"
+		description="Puts the Slidinator jars in Ivy reflecting the value of the package_version in version.properties"
+		>
+		<echo message="Copying jars to ${ivy.repo.scp.user}@${ivy.repo.scp.server}:${ivy.repo.parent.dir}/ivy-repo/slidinator/slidinator-toolkit-plugins/dita2slideset-${package_version}.jar"/>
+		<scp todir="${ivy.repo.scp.user}@${ivy.repo.scp.server}:${ivy.repo.parent.dir}/ivy-repo/slidinator/dita2slideset/dita2slideset-${package_version}.jar" 
+			file="${dist}/dita2slideset.jar"
+			password="${ivy.repo.scp.password}"			
+			verbose="true"
+		/>
+  </target>
+  	<!-- /slidinator/dist/slidinator/slidinator-toolkit-plugins-0.1.2.zip -->
+	  <target name="push-toolkit-plugins-to-ivy" depends="package-toolkit-plugins"
+			description="Puts the Slidinator Toolkit plugin package in Ivy reflecting the value of the package_version in version.properties"
+			>
+			<echo message="Copying toolkit package to ${ivy.repo.scp.user}@${ivy.repo.scp.server}:${ivy.repo.parent.dir}/ivy-repo/slidinator/slidinator-toolkit-plugins/slidinator-toolkit-plugins-${package_version}.zip"/>
+			<scp todir="${ivy.repo.scp.user}@${ivy.repo.scp.server}:${ivy.repo.parent.dir}/ivy-repo/slidinator/slidinator-toolkit-plugins/slidinator-toolkit-plugins-${package_version}.zip" 
+				file="${dist}/slidinator/slidinator-toolkit-plugins-${package_version}.zip"
+				password="${ivy.repo.scp.password}"			
+				verbose="true"
+			/>
+	  </target>
+	
 
 
 </project>
