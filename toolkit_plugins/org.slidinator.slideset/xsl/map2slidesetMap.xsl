@@ -56,7 +56,7 @@
       <xsl:param name="rootMapDocUrl" as="xs:string" tunnel="yes"/>
        <xsl:message> + [DEBUG] generate-slides: isTopicRef</xsl:message>
       
-      <xsl:if test="false() and $debugBoolean">
+      <xsl:if test="$debugBoolean">
         <xsl:message> + [DEBUG] Handling topicref to "<xsl:sequence select="string(@href)"/>" in default mode</xsl:message>
       </xsl:if>
       <xsl:variable name="topic" select="df:resolveTopicRef(.)" as="element()*"/>

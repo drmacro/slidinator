@@ -16,11 +16,14 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
+import javax.xml.transform.SourceLocator;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
+import net.sf.saxon.s9api.MessageListener;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmAtomicValue;
+import net.sf.saxon.s9api.XdmNode;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -32,7 +35,7 @@ import org.slidinator.slideset.SlideSetTransformer;
 
 public class TestSlideSetTransformer {
 
-    @Test
+	@Test
     public
             void testSlideSetTransformer() throws Throwable {
         
@@ -140,6 +143,7 @@ public class TestSlideSetTransformer {
                 basePresentationUrl.openStream());
         candSource = transformer.getMapSource();
         assertNotNull(candSource);
+        
         OutputStream candStream = transformer.getResultStream();
         assertNotNull(candStream);
         assertEquals(resultStream, candStream);
@@ -159,6 +163,8 @@ public class TestSlideSetTransformer {
         deleteMe.delete();
         outdir.mkdirs();
         transformer.setDebug(true);
+        MessageListener listener = new SaxonMessageListener(log);
+        transformer.setMessageListener(listener);
         assertTrue("Expected debug to be true", transformer.getDebug());
         transformer.transform(outdir);
         

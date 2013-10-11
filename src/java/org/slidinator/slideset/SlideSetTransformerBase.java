@@ -165,10 +165,12 @@ public abstract class SlideSetTransformerBase implements SlideSetTransformer {
     
     protected XsltCompiler getSaxonXsltCompiler() throws Exception {
         Processor proc = new Processor(false); // Not schema aware.
+        
         log.info("Using SAXON version " + proc.getSaxonProductVersion());
         proc.setConfigurationProperty(FeatureKeys.DTD_VALIDATION, false);
         proc.setConfigurationProperty(FeatureKeys.LINE_NUMBERING, true);
         XsltCompiler compiler = proc.newXsltCompiler();
+        compiler.setURIResolver(this.uriResolver);
         return compiler;
     }
 

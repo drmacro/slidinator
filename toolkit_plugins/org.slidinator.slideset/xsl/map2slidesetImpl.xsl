@@ -26,16 +26,16 @@
        
        ============================================================== -->
 
-  <xsl:import href="../../../xsl/common/dita-utilities.xsl"/>
-  <xsl:import href="../../../xsl/common/output-message.xsl"/>
+  <xsl:import href="plugin:org.dita.base:xsl/common/dita-utilities.xsl"/>
+  <xsl:import href="plugin:org.dita.base:xsl/common/output-message.xsl"/>
   
-  <xsl:import href="../../net.sourceforge.dita4publishers.common.xslt/xsl/lib/dita-support-lib.xsl"/>
-  <xsl:import href="../../net.sourceforge.dita4publishers.common.xslt/xsl/lib/relpath_util.xsl"/>
-  <xsl:import href="../../net.sourceforge.dita4publishers.common.xslt/xsl/lib/html-generation-utils.xsl"/>
+  <xsl:import href="plugin:net.sourceforge.dita4publishers.common.xslt:xsl/lib/dita-support-lib.xsl"/>
+  <xsl:import href="plugin:net.sourceforge.dita4publishers.common.xslt:/xsl/lib/relpath_util.xsl"/>
+  <xsl:import href="plugin:net.sourceforge.dita4publishers.common.xslt:xsl/lib/html-generation-utils.xsl"/>
   
-  <xsl:import href="../../net.sourceforge.dita4publishers.common.xslt/xsl/graphicMap2AntCopyScript.xsl"/>
-  <xsl:import href="../../net.sourceforge.dita4publishers.common.xslt/xsl/map2graphicMapImpl.xsl"/>
-  <xsl:import href="../../net.sourceforge.dita4publishers.common.mapdriven/xsl/dataCollection.xsl"/>  
+  <xsl:import href="plugin:net.sourceforge.dita4publishers.common.xslt:xsl/graphicMap2AntCopyScript.xsl"/>
+  <xsl:import href="plugin:net.sourceforge.dita4publishers.common.xslt:xsl/map2graphicMapImpl.xsl"/>
+  <xsl:import href="plugin:net.sourceforge.dita4publishers.common.mapdriven:xsl/dataCollection.xsl"/>  
 
   <xsl:include href="map2slidesetMap.xsl"/>
   <xsl:include href="map2slidesetTopic.xsl"/>
@@ -122,6 +122,13 @@
   <xsl:template match="/">
     <xsl:message> + [DEBUG] Root template: Starting...</xsl:message>
     <xsl:apply-templates select="." mode="report-parameters"/>
+    
+    <xsl:message>
+ ==============================
+ + [DEBUG] Input map=
+<xsl:sequence select="."/>
+    
+    </xsl:message>
     
     <xsl:variable name="rootMapDocUrl" select="string(base-uri(.))" as="xs:string"/>
     <xsl:message> + [DEBUG] rootmapDocUrl="<xsl:value-of select="$rootMapDocUrl"/>"</xsl:message>
