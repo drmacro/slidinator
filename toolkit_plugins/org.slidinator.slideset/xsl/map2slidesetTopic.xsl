@@ -103,11 +103,32 @@
   </xsl:template>
   
   <xsl:template match="*[df:class(., 'topic/li')]" mode="#all">
+    <!-- FIXME: May need to handle mix of text and block children
+                as for topic/p 
+      -->
     <sld:li><xsl:apply-templates/></sld:li>    
   </xsl:template>
   
   <xsl:template match="*[df:class(., 'topic/p')]" name="make-para" mode="#all">
-    <sld:p><xsl:apply-templates/></sld:p>    
+    <xsl:choose>
+      <xsl:when test="df:hasBlockChildren(.)">
+        <xsl:for-each-group select="node()" group-by="local:isBlock(.)">
+          <xsl:choose>
+            <xsl:when test="current-grouping-key() = true()">
+              <xsl:apply-templates select="current-group()"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:if test="normalize-space(string-join(current-group(), '')) != ''">
+                <sld:p><xsl:apply-templates select="current-group()"/></sld:p>
+              </xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each-group>
+      </xsl:when>
+      <xsl:otherwise>
+        <sld:p><xsl:apply-templates/></sld:p>    
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template match="*[df:class(., 'topic/fig')]" mode="#all">
@@ -143,6 +164,14 @@
     <xsl:sequence
       select="if ($context/@outputclass) then string($context/@outputclass) else name($context)"
     />
+  </xsl:function>
+  
+  <xsl:function name="local:isBlock" as="xs:boolean">
+    <xsl:param name="node" as="node()"/>
+    <xsl:variable name="result" as="xs:boolean"
+      select="if ($node/self::*) then df:isBlock($node) else false()"
+    />
+    <xsl:sequence select="$result"/>
   </xsl:function>
   
 </xsl:stylesheet>

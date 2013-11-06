@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<d4pSlide id="slide-01" ditaarch:DITAArchVersion="1.2" class="- topic/topic learningBase/learningBase learningContent/learningContent d4pSlide/d4pSlide " xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/">
+<d4pSlide id="slide-01" ditaarch:DITAArchVersion="1.2" class="- topic/topic learningBase/learningBase learningContent/learningContent d4pSlide/d4pSlide " xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+  domains="(topic d4pSlide)"
+  >
 <title
 class="- topic/title ">Inline Tests</title>
 <d4pSlideBody class="- topic/body  learningBase/learningBasebody learningContent/learningContentbody d4pSlide/d4pSlideBody ">

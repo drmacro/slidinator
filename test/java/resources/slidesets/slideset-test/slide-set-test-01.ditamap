@@ -8,5 +8,7 @@
   <topicref
     href="slide-inline-tests.xml" class="- map/topicref "/>
   <topicref
+    href="slide-block-tests.xml" class="- map/topicref "/>
+  <topicref
     href="slide-image-test.xml" class="- map/topicref "/>
 </map>

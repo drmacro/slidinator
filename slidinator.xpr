@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="15.0">
+<project version="15.1">
     <meta>
         <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
         <options>
-            <serialized version="15.0" xml:space="preserve">
+            <serialized version="15.1" xml:space="preserve">
                 <map>
                     <entry>
                         <String>enable.project.master.files.support</String>
@@ -17,6 +17,7 @@
         <folder masterFiles="true" name="Master Files">
             <file name="toolkit_plugins/org.slidinator.slideset/xsl/map2slidesetImpl.xsl"/>
         </folder>
+        <folder path="../dita4publishers_0.9.19_clean/"/>
         <folder path="."/>
     </projectTree>
 </project>

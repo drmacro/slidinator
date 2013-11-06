@@ -176,7 +176,7 @@
 		</copy>
     <!-- Integrate the deployed plugins: -->
     <antcall target="integrate"/>
-
+	 <antcall target="jar-slideset-generator"/>
 	</target>
 	
 	<target name="dist-init" depends="init">

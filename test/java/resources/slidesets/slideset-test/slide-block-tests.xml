@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<d4pSlide id="slide-01" ditaarch:DITAArchVersion="1.2" class="- topic/topic learningBase/learningBase learningContent/learningContent d4pSlide/d4pSlide " xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+domains="(topic d4pSlide)"
+>
+<title
+class="- topic/title ">Block Tests</title>
+<d4pSlideBody class="- topic/body  learningBase/learningBasebody learningContent/learningContentbody d4pSlide/d4pSlideBody ">
+<lcInstruction
+class="- topic/section learningBase/lcInstruction "><p class="- topic/p ">Test of paragraphs with child lists and other blocks</p>
+<p class="- topic/p ">Para with just a list child, no text:</p>
+<p class="- topic/p ">
+<ul class="- topic/ul ">
+<li class="- topic/li ">List item 1</li>
+<li class="- topic/li ">List item 2</li>
+</ul>
+</p>
+<p class="- topic/p ">Para with text before the list child</p>
+<p class="- topic/p ">This is a list:<ul class="- topic/ul ">
+<li class="- topic/li ">List item 1</li>
+<li class="- topic/li ">List item 2</li>
+</ul></p>
+</lcInstruction>
+
+
+</d4pSlideBody>
+</d4pSlide>
