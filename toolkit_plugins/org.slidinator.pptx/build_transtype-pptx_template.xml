@@ -95,17 +95,18 @@
         <isset property="args.slidinator.base.pptx" />
       </not>
     </condition>
-    <java jar="${dita.plugin.org.slidinator.pptx.dir}/lib/dita2slideset-app.jar">
-    	<!--
-    	java -jar /Users/ekimber/workspace_40/dita4publishers_0.9.19_slideset/dist/dita2slideset-app.jar 
-    	DITA2PPTX -i ${cfd}/${cfne} -b ${cfd}/${cfn}-base.pptx -o ${cfd} -otdir ${frameworksDir}/dita/DITA-OT 
-    	-->
+    
+    
+    <java classname="org.slidinator.slideset.DITA2PPTX"      
+      >
     	<arg line="DITA2PPTX"/>
-      <arg line="-i ${user.input.file}"/>
+      <arg line="-i ${dita.map.output.dir}/${dita.map.filename.root}.xml"/>
       <arg line="-b ${args.slidinator.base.pptx}"/>
-      <!-- FIXME: Get the filename of the input map -->
-      <arg line="-o ${dita.out.dir}/${result.pptx}"/>
+      <arg line="-o ${dita.out.dir}/${dita.map.filename.root}.pptx"/>
       <arg line="-otdir ${dita.dir}"/>
+      <classpath>
+        <pathelement location="${dita.plugin.org.slidinator.pptx.dir}/lib/dita2slideset-app.jar"/>
+      </classpath>
     </java>
   </target>
   

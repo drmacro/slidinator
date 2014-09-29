@@ -296,7 +296,10 @@
       srcdir="${src.java.home}"
       destdir="${classes.home}"
       debug="on"
-      deprecation="on">
+      deprecation="on"
+      source="1.6"
+      target="1.6"
+      >
       <classpath refid="classpath.base"/>
     </javac>    
   </target>

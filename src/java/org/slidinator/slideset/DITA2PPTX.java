@@ -178,7 +178,7 @@ public class DITA2PPTX {
                   new File(
                     new File(
                       new File(ditaHomeDir, "plugins"),  
-                      "org.slidinator.slideset"),
+                      "org.slidinator.pptx"),
                     "xsl"), 
                  "map2slidesetImpl.xsl");
 
