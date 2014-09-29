@@ -96,7 +96,7 @@
   </target>
 	
 	<target name="add-version-info-to-files">
-	    <replace file="${plugin.dist}/org.slidinator.slideset/xsl/map2slidesetImpl.xsl"
+	    <replace file="${plugin.dist}/org.slidinator.pptx/xsl/map2slidesetImpl.xsl"
 	      propertyfile="${basedir}/build.number"
 	      >
 	      <replacefilter
@@ -125,7 +125,8 @@
 	<target name="dist-toolkit-plugins" 
 		description="Packages the DITA Open Toolkit plugins for deployment to a working Toolkit instance"
 		 depends="
-		dist-init
+		dist-init,
+		jar-slideset-generator
 		"
 		>
     <delete includeEmptyDirs="true" failonerror="false">
@@ -136,13 +137,18 @@
         <include name="*"/>
       </fileset>
     </copy>
-	<copy todir="${plugin.dist}">
-		<fileset dir="${plugin.src}">
-		 	<include name="org.slidinator.slideset/**"/>
-			<exclude name="*.zip"/> 
-			<exclude name="org.slidinator.*2html"/> 
-		</fileset>
-	</copy>
+  	<copy todir="${plugin.dist}">
+  		<fileset dir="${plugin.src}">
+  		 	<include name="org.slidinator.pptx/**"/>
+  			<exclude name="*.zip"/> 
+  			<exclude name="org.slidinator.*2html"/> 
+      </fileset>
+    </copy>
+  	<copy todir="${plugin.dist}/org.slidinator.pptx/lib">
+  		<fileset dir="${dist}">
+  		  <include name="dita2slideset-app.jar"/>
+  		</fileset>
+  	</copy>
     <copy todir="${doctypes.plugin-dist}/doctypes">
       <fileset dir="${doctypes.src}">
       </fileset>
@@ -176,7 +182,6 @@
 		</copy>
     <!-- Integrate the deployed plugins: -->
     <antcall target="integrate"/>
-	 <antcall target="jar-slideset-generator"/>
 	</target>
 	
 	<target name="dist-init" depends="init">

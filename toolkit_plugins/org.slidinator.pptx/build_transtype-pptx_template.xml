@@ -1,0 +1,130 @@
+<project name="org.slidinator.pptx" default="dita2pptx"
+  >
+  
+	<!-- Controls debugging within the XSLTs. Set to "true" to turn on debugging: -->
+	<property name="debug" value="false"/>
+  
+  
+	
+	<target name="dita2pptx"
+    unless="noMap"
+    xmlns:dita="http://dita-ot.sourceforge.net"
+		dita:depends="build-init, preprocess, pptx"
+    dita:extension="depends org.dita.dost.platform.InsertDependsAction">
+  </target>
+  
+  <target name="pptx"
+    unless="noMap"
+    depends="dita.map.pptx"/>
+	  
+    
+  <target name="dita.map.slideset.init"
+    description="Init properties for slideset">
+    <basename property="dita.map.toc.root"
+      file="${dita.input.filename}"
+      suffix=".ditamap" />
+    <condition property="args.slideset.toc" value="${dita.map.toc.root}">
+      <not>
+        <isset property="args.slideset.toc" />
+      </not>
+    </condition>
+    <condition property="slideset.temp.dir" value="${dita.temp.dir}/slideset-temp">
+      <not>
+        <isset property="slideset.temp.dir" />
+      </not>
+    </condition>
+    <condition property="slideset.output.format" value=".xml">
+      <not>
+        <isset property="slideset.output.format" />
+      </not>
+    </condition>
+    <condition property="out.ext" value=".xml">
+      <not>
+        <isset property="out.ext" />
+      </not>
+    </condition>
+    <condition property="noPlugin">
+      <equals arg1="${dita.slideset.plugin}" arg2="no" />
+    </condition>
+
+
+  </target>
+  
+
+  <target name="slideset.generate.slidesetml">
+  	<mkdir dir="${slideset.temp.dir}"/>
+  	<makeurl file="${slideset.temp.dir}" property="slideset.xslt.outdir"/>
+  	<makeurl file="${dita.temp.dir}" property="slideset.xslt.tempdir"/>
+  	
+  	<property name="map2slideset.style" location="${dita.plugin.org.slidinator.pptx.dir}/xsl/map2slideset.xsl"/>
+		<property name="slideset.result.filename" 
+			value="${dita.map.filename.root}.${slideset.output.format}"/>
+
+    <xslt processor="trax"
+      basedir="${dita.temp.dir}"
+      destdir="${dita.map.output.dir}"
+      extension=".xml"
+      out="${dita.map.output.dir}/${dita.map.filename.root}.xml"
+      includesfile="${dita.temp.dir}${file.separator}fullditamap.list"
+      classpathref="dost.class.path"
+      style="${map2slideset.style}">
+  		<param name="debug" expression="${debug}"/>
+  		<param name="tempdir" expression="${slideset.xslt.tempdir}"/>
+  		<param name="outdir" expression="${slideset.xslt.outdir}"/>
+  		<param name="rawPlatformString" expression="${os.name}"/>
+  		
+  		<!-- Parameters from dita2xhtml and similar transtypes: -->   
+  		<param name="WORKDIR" expression="${workdir}" if="workdir"/>
+  		<param name="DRAFT" expression="${args.draft}" if="args.draft"></param>
+  		<param name="ARTLBL" expression="${args.artlbl}" if="args.artlbl"></param>
+  		<param name="OUTPUTDIR" expression="${slideset.xslt.outdir}"/>
+      <xmlcatalog refid="dita.catalog"/>
+    </xslt>
+
+  </target>
+	 
+	
+  <target name="slideset.generate.pptx" 
+	  depends="dita.map.slideset.init, 
+	           slideset.generate.slidesetml
+  	           "
+  >
+    <condition property="args.slidinator.base.pptx" 
+      value="${dita.plugin.org.slidinator.pptx.dir}/resources/pptx/generic-presentation.pptx">
+      <not>
+        <isset property="args.slidinator.base.pptx" />
+      </not>
+    </condition>
+    <java jar="${dita.plugin.org.slidinator.pptx.dir}/lib/dita2slideset-app.jar">
+    	<!--
+    	java -jar /Users/ekimber/workspace_40/dita4publishers_0.9.19_slideset/dist/dita2slideset-app.jar 
+    	DITA2PPTX -i ${cfd}/${cfne} -b ${cfd}/${cfn}-base.pptx -o ${cfd} -otdir ${frameworksDir}/dita/DITA-OT 
+    	-->
+    	<arg line="DITA2PPTX"/>
+      <arg line="-i ${user.input.file}"/>
+      <arg line="-b ${args.slidinator.base.pptx}"/>
+      <!-- FIXME: Get the filename of the input map -->
+      <arg line="-o ${dita.out.dir}/${result.pptx}"/>
+      <arg line="-otdir ${dita.dir}"/>
+    </java>
+  </target>
+  
+  <target name="dita.map.pptx" 
+  	depends="slideset.generate.pptx" 
+  	description="Generate slideset data files and PPTX from the input map">
+  	
+   <!-- All work is done by dependency targets -->
+  </target>
+  
+  <target name="slideset.copy.graphics" 
+	  description="Copies graphics from input to the slideset output directory based on the graphic map generated during slideset generation">
+  	<condition property="isCopyGraphics">
+     <available file="${slideset.temp.dir}/copy-graphics.xml"/>
+    </condition>
+  	<ant antfile="${slideset.temp.dir}/copy-graphics.xml"
+  		
+  		>
+  	</ant>
+	</target>
+	
+</project>

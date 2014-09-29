@@ -23,7 +23,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * Command-line utility for generation PPTX files from resolved DITA maps.
+ * Command-line utility for generation of PPTX files from resolved DITA maps.
  * The input to this process should be the result of e.g., the Open Toolkit's
  * map-pull preprocess.
  *
