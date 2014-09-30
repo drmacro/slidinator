@@ -1,8 +1,9 @@
 <plugin id="org.slidinator.pptx">
   <extension id="xsl.transtype-slideset"/>
   
-  <require plugin="org.dita4publishers.common.mapdriven"/> 
   <require plugin="org.dita-community.common.xslt"/> 
+  <require plugin="org.dita4publishers.common.xslt"/> 
+  <require plugin="org.dita4publishers.common.mapdriven"/> 
 
   <template file="build_transtype-pptx_template.xml"/>
   

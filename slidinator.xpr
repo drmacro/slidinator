@@ -230,7 +230,6 @@
         </folder>
         <folder path="../../../../Applications/oxygen/frameworks/dita/DITA-OT/"/>
         <folder path="../../workspace-d4p/dita4publishers/"/>
-        <folder path="../../workspace/slidinator-julio/"/>
         <folder path="../rsuite-sales-demo/"/>
         <folder path="."/>
     </projectTree>

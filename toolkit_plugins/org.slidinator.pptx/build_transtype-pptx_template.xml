@@ -97,7 +97,7 @@
     </condition>
     
     
-    <java classname="org.slidinator.slideset.SlideSet2PPTX"      
+    <java classname="org.slidinator.slideset.SlideSet2PPTX"
       >
       <!-- NOTE: The input is the output of the slideset.generate.slidesetml target. -->
       <arg line="-i ${dita.map.output.dir}/${dita.map.filename.root}.xml"/>
