@@ -2,6 +2,7 @@ package org.slidinator.slideset;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import org.apache.commons.cli.BasicParser;
@@ -163,10 +164,10 @@ public class SlideSet2PPTX {
         }
 
         
-        System.out.println("+ [INFO] DITA2PPTX: Processing slide set: \"" + slidesetFile.getAbsolutePath() + "\".");
-        System.out.println("+ [INFO] DITA2PPTX: Using base PPTX file: \"" + basePPTXFile.getAbsolutePath() + "\".");
-        System.out.println("+ [INFO] DITA2PPTX: To result PPTX file:  \"" + resultPPTXFile.getAbsolutePath() + "\".");
-        System.out.println("+ [INFO] DITA2PPTX: Using Open Toolkit:   \"" + ditaHomePath + "\".");
+        System.out.println("+ [INFO] SlideSet2PPTX: Processing slide set: \"" + slidesetFile.getAbsolutePath() + "\".");
+        System.out.println("+ [INFO] SlideSet2PPTX: Using base PPTX file: \"" + basePPTXFile.getAbsolutePath() + "\".");
+        System.out.println("+ [INFO] SlideSet2PPTX: To result PPTX file:  \"" + resultPPTXFile.getAbsolutePath() + "\".");
+        System.out.println("+ [INFO] SlideSet2PPTX: Using Open Toolkit:   \"" + ditaHomePath + "\".");
         
         try {
             doPPTXGeneration(
@@ -197,6 +198,7 @@ public class SlideSet2PPTX {
                 new PPTXSlideSetTransformer(
                         slidesetFile,                         
                         basePresentationStream);
+        transformer.setResultStream(new FileOutputStream(resultPPTXFile));
         transformer.generatePPTXFromSlideSetXML(new FileInputStream(slidesetFile));
         System.out.println(" + [INFO] PPTX file written to \"" + resultPPTXFile.getAbsolutePath());
         
