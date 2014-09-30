@@ -1,5 +1,6 @@
 package org.slidinator.slideset;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -28,10 +29,14 @@ import net.sf.saxon.s9api.XsltTransformer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.xml.resolver.CatalogManager;
 import org.apache.xml.resolver.tools.CatalogResolver;
+import org.slidinator.slideset.visitors.PPTXGeneratingSlideSetVisitor;
+import org.slidinator.slideset.visitors.SlideSetException;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.SAXException;
 
 /**
  * Utility class that manages the full DITA-to-slideset-to-slides transformation
@@ -292,6 +297,5 @@ public abstract class SlideSetTransformerBase implements SlideSetTransformer {
             getMessageListener() {
                 return this.messageListener;
             }
-
 
 }

@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.URIResolver;
 
@@ -18,6 +19,8 @@ import net.sf.saxon.s9api.XdmAtomicValue;
 
 import org.apache.commons.logging.Log;
 import org.apache.xml.resolver.CatalogManager;
+import org.slidinator.slideset.visitors.SlideSetException;
+import org.xml.sax.SAXException;
 
 public interface SlideSetTransformer {
 
@@ -170,5 +173,6 @@ public interface SlideSetTransformer {
      * @return The configured message listener, or null if the listener has not been set.
      */
     public MessageListener getMessageListener();
-
+    
+    
 }

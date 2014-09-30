@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -14,6 +15,8 @@ import net.sf.saxon.s9api.Serializer;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.slidinator.slideset.visitors.PPTXGeneratingSlideSetVisitor;
+import org.slidinator.slideset.visitors.SlideSetException;
+import org.xml.sax.SAXException;
 
 /**
  * Slide Set transformer that generates PowerPoint (PPTX) output.
@@ -23,7 +26,7 @@ import org.slidinator.slideset.visitors.PPTXGeneratingSlideSetVisitor;
 public class PPTXSlideSetTransformer
         extends SlideSetTransformerBase {
 
-    private InputStream basePresentationStream;
+    InputStream basePresentationStream;
     /**
      * Construct the transformer with the input map source and result output stream. 
      * @param mapSource Source providing the DITA map to process.
@@ -48,10 +51,10 @@ public class PPTXSlideSetTransformer
     }
 
     public PPTXSlideSetTransformer(
-            File mapFile,
+            File inputFile,
             InputStream basePresentationStream) throws Exception {
-        super(new FileInputStream(mapFile),
-                mapFile.toURI().toURL().toExternalForm());
+        super(new FileInputStream(inputFile),
+                inputFile.toURI().toURL().toExternalForm());
         this.basePresentationStream = basePresentationStream;
     }
 
@@ -83,21 +86,42 @@ public class PPTXSlideSetTransformer
             throw new PPTXGenerationException("base PPTX presentation stream not set.");
         }
         
-        log.info("Generating PowerPoint from slide set XML...");
-        PPTXGeneratingSlideSetVisitor visitor = 
-                new PPTXGeneratingSlideSetVisitor(
-                        basePresentationStream);
-        
-        InputStream xmlInstream = new ByteArrayInputStream(slideSetXmlOutStream.toByteArray());
-        visitor.generatePresentation(xmlInstream);
-        XMLSlideShow pptx = visitor.getPptx();
-        if (pptx == null) {
-            throw new PPTXGenerationException("Failed to get a PPTX from the transform.");
-        }
-        pptx.write(getResultStream());
-        log.info("Powerpoint Generated");
+        InputStream slideSetXmlInputStream = new ByteArrayInputStream(slideSetXmlOutStream.toByteArray());
+        generatePPTXFromSlideSetXML(slideSetXmlInputStream);
         
     }
+
+	/**
+	 * Generate Powerpoint from a simpleslideset XML document.
+	 * @param slideSetXmlInputStream
+	 * @throws Exception
+	 * @throws ParserConfigurationException
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws SlideSetException
+	 * @throws PPTXGenerationException
+	 */
+	public void generatePPTXFromSlideSetXML(
+			InputStream slideSetXmlInputStream) throws Exception,
+			ParserConfigurationException, IOException, SAXException,
+			SlideSetException, PPTXGenerationException {
+				log.info("Generating PowerPoint from slide set XML...");
+				if (basePresentationStream == null) {
+					throw new PPTXGenerationException("generatePPTXFromSlideSetXML(): basePresentationStream has not been set. Caller must set the base presentation stream before calling this method.");
+				}
+			    PPTXGeneratingSlideSetVisitor visitor = 
+			            new PPTXGeneratingSlideSetVisitor(
+			                    basePresentationStream);
+			    
+			    visitor.generatePresentation(slideSetXmlInputStream);
+			    XMLSlideShow pptx = visitor.getPptx();
+			    if (pptx == null) {
+			        throw new PPTXGenerationException("Failed to get a PPTX from the transform.");
+			    }
+			    pptx.write(getResultStream());
+			    log.info("Powerpoint Generated");
+			}
+
 
     @Override
     public

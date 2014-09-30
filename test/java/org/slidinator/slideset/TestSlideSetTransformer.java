@@ -16,22 +16,18 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
-import javax.xml.transform.SourceLocator;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.s9api.MessageListener;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmAtomicValue;
-import net.sf.saxon.s9api.XdmNode;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-import org.slidinator.slideset.PPTXSlideSetTransformer;
-import org.slidinator.slideset.SlideSetTransformer;
 
 public class TestSlideSetTransformer {
 
@@ -67,7 +63,7 @@ public class TestSlideSetTransformer {
                   new File(
                     new File(
                       new File(ditaHomeDir, "plugins"),  
-                      "org.slidinator.slideset"),
+                      "org.slidinator.pptx"),
                     "xsl"), 
                  "map2slidesetImpl.xsl");
 

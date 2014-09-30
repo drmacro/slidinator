@@ -97,15 +97,16 @@
     </condition>
     
     
-    <java classname="org.slidinator.slideset.DITA2PPTX"      
+    <java classname="org.slidinator.slideset.SlideSet2PPTX"      
       >
-    	<arg line="DITA2PPTX"/>
+      <!-- NOTE: The input is the output of the slideset.generate.slidesetml target. -->
       <arg line="-i ${dita.map.output.dir}/${dita.map.filename.root}.xml"/>
       <arg line="-b ${args.slidinator.base.pptx}"/>
       <arg line="-o ${dita.out.dir}/${dita.map.filename.root}.pptx"/>
       <arg line="-otdir ${dita.dir}"/>
       <classpath>
         <pathelement location="${dita.plugin.org.slidinator.pptx.dir}/lib/dita2slideset-app.jar"/>
+        <pathelement path="${dost.class.path}"/>
       </classpath>
     </java>
   </target>
