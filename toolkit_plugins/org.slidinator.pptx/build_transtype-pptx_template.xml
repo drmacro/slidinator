@@ -59,7 +59,7 @@
   	<property name="map2slideset.style" location="${dita.plugin.org.slidinator.pptx.dir}/xsl/map2slideset.xsl"/>
 		<property name="slideset.result.filename" 
 			value="${dita.map.filename.root}.${slideset.output.format}"/>
-
+    
     <xslt processor="trax"
       basedir="${dita.temp.dir}"
       destdir="${dita.map.output.dir}"
@@ -102,7 +102,7 @@
       <!-- NOTE: The input is the output of the slideset.generate.slidesetml target. -->
       <arg line="-i ${dita.map.output.dir}/${dita.map.filename.root}.xml"/>
       <arg line="-b ${args.slidinator.base.pptx}"/>
-      <arg line="-o ${dita.out.dir}/${dita.map.filename.root}.pptx"/>
+      <arg line="-o ${dita.map.output.dir}/${dita.map.filename.root}.pptx"/>
       <arg line="-otdir ${dita.dir}"/>
       <classpath>
         <pathelement location="${dita.plugin.org.slidinator.pptx.dir}/lib/dita2slideset-app.jar"/>

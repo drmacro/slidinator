@@ -10,6 +10,10 @@
                         <Boolean>true</Boolean>
                     </entry>
                     <entry>
+                        <String>key.relax.ng.option.pane</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
                         <String>scenario.associations</String>
                         <scenarioAssociation-array>
                             <scenarioAssociation>
@@ -111,6 +115,33 @@
                                             </field>
                                             <field name="possibleValues">
                                                 <null/>
+                                            </field>
+                                        </ditaParameter>
+                                        <ditaParameter>
+                                            <field name="name">
+                                                <String>validate</String>
+                                            </field>
+                                            <field name="description">
+                                                <null/>
+                                            </field>
+                                            <field name="value">
+                                                <String>no</String>
+                                            </field>
+                                            <field name="defaultValue">
+                                                <String>yes</String>
+                                            </field>
+                                            <field name="type">
+                                                <Integer>4</Integer>
+                                            </field>
+                                            <field name="isPredefined">
+                                                <Boolean>true</Boolean>
+                                            </field>
+                                            <field name="possibleValues">
+                                                <String-array>
+                                                    <null/>
+                                                    <String>yes</String>
+                                                    <String>no</String>
+                                                </String-array>
                                             </field>
                                         </ditaParameter>
                                     </list>
@@ -220,6 +251,10 @@
                             </ditaScenario>
                         </scenario-array>
                     </entry>
+                    <entry>
+                        <String>validation.relax-ng.defaults</String>
+                        <Boolean>false</Boolean>
+                    </entry>
                 </serializableOrderedMap>
             </serialized>
         </options>
@@ -230,7 +265,6 @@
         </folder>
         <folder path="../../../../Applications/oxygen/frameworks/dita/DITA-OT/"/>
         <folder path="../../workspace-d4p/dita4publishers/"/>
-        <folder path="../rsuite-sales-demo/"/>
         <folder path="."/>
     </projectTree>
 </project>

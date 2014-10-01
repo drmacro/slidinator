@@ -44,7 +44,7 @@ public class SlideSet2PPTX {
 
         option = new Option("o", true, 
                 "(optional) The output file. If an extension is not specified, the extension will be '.pptx'. " +
-                "If not specified, the input map filename is used for the output, with the extension '.pptx'.");
+                "If not specified, the input file filename is used for the output, with the extension '.pptx'.");
         option.setArgName("basePPTXPath");
         options.addOption(option);
 
@@ -68,14 +68,18 @@ public class SlideSet2PPTX {
             System.exit(-1);
         }
         String slidesetPath = cmd.getOptionValue("i");
+        System.out.println("+ [INFO] Input file: " + slidesetPath);
         String basePPTXPath = cmd.getOptionValue("b");
+        System.out.println("+ [INFO] Base PPTX: " + basePPTXPath);
         String resultPPTXPath = null;
         if (cmd.hasOption("o")) {
             resultPPTXPath = cmd.getOptionValue("o");            
+            System.out.println("+ [INFO] -o (ouptut file): " + resultPPTXPath);
         }
         String otPath = null;
         if (cmd.hasOption("otdir")) {
             otPath = cmd.getOptionValue("otdir");            
+            System.out.println("+ [INFO] Open Toolkit directory: " + otPath);
         }
         
         String ditaHomePath = otPath;
@@ -85,6 +89,7 @@ public class SlideSet2PPTX {
                 System.err.println("Environment variable DITA_HOME not set and -otdir parameter not specified, cannot continue.");
                 System.exit(-1);
             }
+            System.out.println("+ [INFO] Open Toolkit directory: " + otPath);
             
         }
         
@@ -133,17 +138,24 @@ public class SlideSet2PPTX {
                     new File(
                             resultPPTXDir, 
                             FilenameUtils.getBaseName(slidesetFile.getName()) + ".pptx");
+            System.out.println("+ [INFO] Result PPTX file: " + resultPPTXFile.getAbsolutePath());
         } else {
             resultPPTXFile = new File(resultPPTXPath);
             if (!resultPPTXFile.isAbsolute()) {
                 resultPPTXFile = new File(userDir, resultPPTXFile.getPath());
             }
-            resultPPTXFile.mkdirs();
+            if (resultPPTXFile.getName().endsWith(".pptx")) {
+            	resultPPTXFile.getParentFile().mkdirs();
+            } else {
+            	resultPPTXFile.mkdirs();
+            }
             if (resultPPTXFile.isDirectory()) {
+            	System.out.println("+ [INFO] " + resultPPTXFile.getAbsolutePath() + " is a directory.");
                 resultPPTXFile = 
                         new File(
                                 resultPPTXFile, 
                                 FilenameUtils.getBaseName(slidesetFile.getName()) + ".pptx");                
+                System.out.println("+ [INFO] Result PPTX file: " + resultPPTXFile.getAbsolutePath());
             }
         }
         if (!basePPTXFile.canWrite()) {
