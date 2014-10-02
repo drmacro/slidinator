@@ -2,7 +2,7 @@
   <extension id="xsl.transtype-slideset2htmlslidy"/>
   
   <require plugin="net.sourceforge.dita4publishers.common.xslt"/>
-  <require plugin="org.slidinator.slideset"/>
+  <require plugin="org.slidinator.pptx"/>
   <require plugin="org.slidinator.slideset2html.common"/>
 
   <template file="build_transtype-slideset2htmlslidy_template.xml"/>
